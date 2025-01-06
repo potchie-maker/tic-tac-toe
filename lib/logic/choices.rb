@@ -16,13 +16,8 @@ module Choices
   end
 
   def self.set_player_2_char(player_1_char)
-    if player_1_char == 'X'
-      player_2_char = 'O'
-    else
-      player_2_char = 'X'
-    end
-    player_2_char
-  end
+    player_1_char == 'X' ? 'O' : 'X'
+  end  
 
   def self.choose_spot(grid)
     numbs = '123456789'

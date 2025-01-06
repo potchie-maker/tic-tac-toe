@@ -8,22 +8,19 @@ module PlayGame
     puts "Player 1, make your choice."
     player_1_spot = Choices.get_spot(grid)
     grid = grid.gsub(player_1_spot, player_1_char)
-    PrintGrid.print(player_1_char, player_2_char, grid)
-
-    if FindWinner.won(grid)[:won] == false && FindWinner.won(grid)[:tie] == false
-      puts "Player 2, make your choice."
-      player_2_spot = Choices.get_spot(grid)
-      grid = grid.gsub(player_2_spot, player_2_char)
-      PrintGrid.print(player_1_char, player_2_char, grid)
-    end
 
     status = FindWinner.won(grid)
+    return status if status[:won] || status[:tie]
 
-    if status[:won] == false && status[:tie] == false
-      round(player_1_char, player_2_char, grid)
-    else
-      status
-    end
+    PrintGrid.print(player_1_char, player_2_char, grid)
+    puts "Player 2, make your choice."
+    player_2_spot = Choices.get_spot(grid)
+    grid = grid.gsub(player_2_spot, player_2_char)
+
+    status = FindWinner.won(grid)
+    return status if status[:won] || status[:tie]
+
+    round(player_1_char, player_2_char, grid)
   end
 
   def self.play
@@ -35,16 +32,11 @@ module PlayGame
     
     result = round(player_1_char, player_2_char, grid)
 
-    if result[:winning_char] == player_1_char
-      winner = 'PLAYER 1'
-    else
-      winner = 'PLAYER 2'
-    end
+    winner = result[:winning_char] == player_1_char ? 'PLAYER 1' : 'PLAYER 2'
 
-    case
-    when result[:won]
+    if result[:won]
       puts "\n#{winner} HAS WON THE MATCH!\n\n"
-    when result[:tie]
+    elsif result[:tie]
       puts "\nNo one won this match\n\n"
     end
   end
