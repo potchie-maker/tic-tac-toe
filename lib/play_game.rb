@@ -10,7 +10,10 @@ module PlayGame
     grid = grid.gsub(player_1_spot, player_1_char)
 
     status = FindWinner.won(grid)
-    return status if status[:won] || status[:tie]
+    if status[:won] || status[:tie]
+      PrintGrid.print(player_1_char, player_2_char, grid)
+      return status
+    end
 
     PrintGrid.print(player_1_char, player_2_char, grid)
     puts "Player 2, make your choice."
@@ -18,7 +21,10 @@ module PlayGame
     grid = grid.gsub(player_2_spot, player_2_char)
 
     status = FindWinner.won(grid)
-    return status if status[:won] || status[:tie]
+    if status[:won] || status[:tie]
+      PrintGrid.print(player_1_char, player_2_char, grid)
+      return status
+    end
 
     round(player_1_char, player_2_char, grid)
   end
